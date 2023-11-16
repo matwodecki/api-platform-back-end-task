@@ -1,3 +1,31 @@
+## Instrukcja
+
+Wykorzystuję domyślne ustawienia z API Platform Distribution, więc uruchomienie wymaga następujących komend:
+
+    docker compose build --no-cache
+    docker compose up --wait
+
+Jeżeli nie korzystasz z wysłanego archiwum, konieczne jest wygenerowanie kluczy do podpisywania tokenów JWT. Po uruchomieniu kontenerów należy wykonać następujące polecenie:
+
+    docker compose exec php sh -c '
+        set -e
+        apk add openssl
+        php bin/console lexik:jwt:generate-keypair
+        setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
+        setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
+    '
+
+Dokumentacja znajduje się pod `/docs`. Domyślnie utworzone są przykładowe zlecenia.
+
+Do logowania wykorzystywane są tokeny JWT:
+* Aby utworzyć użytkownika trzeba wysłać odpowiednie zapytanie na `POST /users`.
+* Aby zalogować się tym użytkownikiem należy następnie wysłać zapytanie z tym loginem i hasłem na `POST /auth`
+* Aby móc wykonywać zapytania na `/fixtures` należy podać w headerze `Authorization: Bearer uzyskany_token`. W dokumentacji pozwala na to przycisk Authorize.
+
+###### Poniżej oryginalna część README.md
+
+---
+
 <h1 align="center"><a href="https://api-platform.com"><img src="https://api-platform.com/images/logos/Logo_Circle%20webby%20text%20blue.png" alt="API Platform" width="250" height="250"></a></h1>
 
 API Platform is a next-generation web framework designed to easily create API-first projects without compromising extensibility
