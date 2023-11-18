@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource(
-    order: ['data_przyjecia' => 'DESC'],
+    order: ['dataPrzyjecia' => 'DESC'],
     operations: [
         new Get(),
         new GetCollection(),
@@ -33,21 +33,37 @@ class Fixture
 
     #[ORM\Column]
     #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Zbyt długa marka'
+    )]
     public string $marka = '';
 
     #[ORM\Column]
     #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 100,
+        maxMessage: 'Zbyt długi model'
+    )]
     public string $model = '';
 
     #[ORM\Column]
     #[Assert\NotBlank]
-    public string $nr_seryjny = '';
+    #[Assert\Length(
+        max: 50,
+        maxMessage: 'Zbyt długi model seryjny'
+    )]
+    public string $nrSeryjny = '';
 
     #[ORM\Column]
     #[Assert\NotBlank]
-    public ?\DateTimeImmutable $data_przyjecia = null;
+    public ?\DateTimeImmutable $dataPrzyjecia = null;
 
     #[ORM\Column(length: 1000, nullable: true)]
+    #[Assert\Length(
+        max: 1000,
+        maxMessage: 'Zbyt długi opis'
+    )]
     public ?string $opis = null;
 
     #[ORM\Column]
