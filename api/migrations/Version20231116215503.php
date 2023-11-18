@@ -29,6 +29,7 @@ final class Version20231116215503 extends AbstractMigration
         foreach ($fixtures as $fixture) {
             $this->addSql('INSERT INTO FIXTURE VALUES(:id, :marka, :model, :nr_seryjny, :data_przyjecia, :opis, :status)', $fixture);
         }
+        $this->addSql("ALTER SEQUENCE fixture_id_seq RESTART WITH 6");
     }
 
     public function down(Schema $schema): void
