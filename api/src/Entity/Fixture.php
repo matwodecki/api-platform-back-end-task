@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
-use App\Validator;
+use App\Enum\Status;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -68,8 +68,7 @@ class Fixture
 
     #[ORM\Column]
     #[Assert\NotBlank]
-    #[Validator\AllowedStatus]
-    public string $status = '';
+    public ?Status $status = null;
 
     public function getId(): ?int
     {
