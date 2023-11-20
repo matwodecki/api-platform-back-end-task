@@ -29,7 +29,10 @@ final class Version20231116215503 extends AbstractMigration
         foreach ($fixtures as $fixture) {
             $this->addSql('INSERT INTO FIXTURE VALUES(:id, :marka, :model, :nr_seryjny, :data_przyjecia, :opis, :status)', $fixture);
         }
-        $this->addSql("ALTER SEQUENCE fixture_id_seq RESTART WITH 6");
+        $this->addSql('ALTER SEQUENCE fixture_id_seq RESTART WITH 6');
+        $user = ['id' => '1', 'email' => 'user@example.com', 'password' => '$2y$13$cNwf8ATcM30p.45ey0lL.u7PZg1x85AB9NKEnH89vi/MyjYUDCYty', 'roles' => '[]']; // password
+        $this->addSql('INSERT INTO public.user VALUES(:id, :email, :password, :roles)', $user);
+        $this->addSql('ALTER SEQUENCE user_id_seq RESTART WITH 2');
     }
 
     public function down(Schema $schema): void
@@ -37,5 +40,6 @@ final class Version20231116215503 extends AbstractMigration
         for ($id=1; $id <= 5; $id++) {
             $this->addSql('DELETE FROM FIXTURE WHERE id = '.$id);
         }
+        $this->addSql('DELETE FROM USER WHERE id = 1');
     }
 }

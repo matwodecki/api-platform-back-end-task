@@ -5,16 +5,6 @@ Wykorzystuję domyślne ustawienia z API Platform Distribution, więc uruchomien
     docker compose build --no-cache
     docker compose up --wait
 
-Jeżeli nie korzystasz z wysłanego archiwum, konieczne jest wygenerowanie kluczy do podpisywania tokenów JWT. Po uruchomieniu kontenerów należy wykonać następujące polecenie:
-
-    docker compose exec php sh -c '
-        set -e
-        apk add openssl
-        php bin/console lexik:jwt:generate-keypair
-        setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
-        setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
-    '
-
 Dokumentacja znajduje się pod `/serv-api-doc`. Domyślnie utworzone są przykładowe zlecenia.
 
 Do logowania wykorzystywane są tokeny JWT:
