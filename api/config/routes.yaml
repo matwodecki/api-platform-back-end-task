@@ -9,5 +9,5 @@ auth:
     methods: ['POST']
 
 api_doc:
-    path: /api
+    path: /serv-api-doc
     controller: api_platform.swagger_ui.action

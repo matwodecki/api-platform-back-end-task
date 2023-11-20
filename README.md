@@ -15,7 +15,7 @@ Jeżeli nie korzystasz z wysłanego archiwum, konieczne jest wygenerowanie klucz
         setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
     '
 
-Dokumentacja znajduje się pod `/docs`. Domyślnie utworzone są przykładowe zlecenia.
+Dokumentacja znajduje się pod `/serv-api-doc`. Domyślnie utworzone są przykładowe zlecenia.
 
 Do logowania wykorzystywane są tokeny JWT:
 * Aby utworzyć użytkownika trzeba wysłać odpowiednie zapytanie na `POST /users`.
