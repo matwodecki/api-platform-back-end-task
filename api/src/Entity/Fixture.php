@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource(
-    order: ['dataPrzyjecia' => 'DESC'],
+    order: ['orderDate' => 'DESC'],
     operations: [
         new Get(),
         new GetCollection(),
@@ -28,17 +28,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(SearchFilter::class, properties: ['status' => 'partial', 'model' => 'ipartial'])]
 class Fixture
 {
+    /** Identyfikator zlecenia */
     #[ORM\Id, ORM\Column, ORM\GeneratedValue]
     private ?int $id = null;
 
+    /** Marka urządzenia */
     #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Length(
         max: 50,
         maxMessage: 'Zbyt długa marka'
     )]
-    public string $marka = '';
+    public string $brand = '';
 
+    /** Model urządzenia */
     #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Length(
@@ -47,25 +50,29 @@ class Fixture
     )]
     public string $model = '';
 
+    /** Numer seryjny urządzenia */
     #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Length(
         max: 50,
         maxMessage: 'Zbyt długi model seryjny'
     )]
-    public string $nrSeryjny = '';
+    public string $serialNumber = '';
 
+    /** Data przyjęcia zlecenia */
     #[ORM\Column]
     #[Assert\NotBlank]
-    public ?\DateTimeImmutable $dataPrzyjecia = null;
+    public ?\DateTimeImmutable $orderDate = null;
 
+    /** Opis zlecenia */
     #[ORM\Column(length: 1000, nullable: true)]
     #[Assert\Length(
         max: 1000,
         maxMessage: 'Zbyt długi opis'
     )]
-    public ?string $opis = null;
+    public ?string $description = null;
 
+    /** Status zlecenia */
     #[ORM\Column]
     #[Assert\NotBlank]
     public ?Status $status = null;
