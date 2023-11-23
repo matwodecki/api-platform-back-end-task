@@ -5,6 +5,10 @@ Wykorzystuję domyślne ustawienia z API Platform Distribution, więc uruchomien
     docker compose build --no-cache
     docker compose up --wait
 
+Przykładowe dane można wstawić poleceniem:
+
+     docker compose exec php bin/console doctrine:fixtures:load
+
 Dokumentacja znajduje się pod `/serv-api-doc`. Domyślnie utworzone są przykładowe zlecenia.
 
 Do logowania wykorzystywane są tokeny JWT:

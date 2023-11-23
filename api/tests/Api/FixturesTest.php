@@ -5,21 +5,26 @@ namespace App\Tests\Api;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use App\Repository\UserRepository;
+use App\Factory\FixtureFactory;
+use App\Factory\UserFactory;
+use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 use App\Entity\Fixture;
 
 class FixturesTest extends ApiTestCase
 {
-    use ResetDatabase;
+    use ResetDatabase, Factories;
 
     private Client $client;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
+        UserFactory::createOne(['email' => 'user@example.com']);
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('user@example.com');
         $this->client->loginUser($testUser);
+        FixtureFactory::createMany(5);
     }
 
     public function testGetFixtures(): void

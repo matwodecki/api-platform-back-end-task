@@ -5,18 +5,21 @@ namespace App\Tests\Api;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use App\Repository\UserRepository;
+use App\Factory\UserFactory;
+use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 use App\Entity\User;
 
 class UsersTest extends ApiTestCase
 {
-    use ResetDatabase;
+    use ResetDatabase, Factories;
 
     private Client $client;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
+        UserFactory::createOne(['email' => 'user@example.com']);
     }
 
     public function testGetUsers(): void
