@@ -58,4 +58,61 @@ class UsersTest extends ApiTestCase
 
         $this->assertResponseStatusCodeSame(422);
     }
+
+    public function testGetOneUser(): void
+    {
+        $user = UserFactory::random();
+        $id = $user->getId();
+        $iri = $this->findIriBy(User::class, ['id' => $id]);
+        $this->client->request('GET', $iri);
+        $this->assertResponseStatusCodeSame(200);
+    }
+
+    public function testUpdateUser(): void
+    {
+        $user = UserFactory::random();
+        $id = $user->getId();
+        $iri = $this->findIriBy(User::class, ['id' => $id]);
+        $this->client->request('PATCH', $iri, [
+            'json' => [
+                'plainPassword' => '1234qwer'
+            ],
+            'headers' => [
+                'Content-Type' => 'application/merge-patch+json'
+            ]
+        ]);
+        $this->assertResponseIsSuccessful();
+        $this->assertJsonContains([
+            '@id' => $iri
+        ]);
+    }
+
+    public function testReplaceUser(): void
+    {
+        $user = UserFactory::random();
+        $id = $user->getId();
+        $iri = $this->findIriBy(User::class, ['id' => $id]);
+        $response = $this->client->request('PUT', $iri, ['json' => [
+            'email' => 'test@example.com',
+            'plainPassword' => '1234qwer'
+        ]]);
+        $this->assertResponseStatusCodeSame(200);
+        $this->assertResponseHeaderSame('content-type', 'application/ld+json; charset=utf-8');
+        $this->assertJsonContains([
+            '@context' => '/contexts/User',
+            '@type' => 'User',
+            'email' => 'test@example.com'
+        ]);
+        $this->assertMatchesRegularExpression('~^/users/\d+$~', $response->toArray()['@id']);
+        $this->assertMatchesResourceItemJsonSchema(User::class);
+    }
+
+    public function testRemoveUser(): void
+    {
+        UserFactory::createOne(['email' => 'test@example.com']);
+        $iri = $this->findIriBy(User::class, ['email' => 'test@example.com']);
+        $this->client->request('DELETE', $iri);
+        $this->assertResponseStatusCodeSame(204);
+        static::getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'test@example.com']);
+    }
 }

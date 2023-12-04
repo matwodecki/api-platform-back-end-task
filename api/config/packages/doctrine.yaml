@@ -22,7 +22,6 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
-# Comment out for local testing
 when@test:
     doctrine:
         dbal:
